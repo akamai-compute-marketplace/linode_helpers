@@ -45,6 +45,8 @@
     path: group_vars/linode/vars
     line: | 
       password: {{ password }}
+  run_once: true
+  delegate_to: localhost
 
 - name: Set sudo user
   user:

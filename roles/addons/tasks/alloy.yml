@@ -1,0 +1,55 @@
+---
+- name: Ensure required dependencies are installed
+  apt:
+    name:
+      - gpg
+      - curl
+      - debian-archive-keyring
+    state: present
+    update_cache: true
+
+- name: Create directory for keyrings
+  file:
+    path: /etc/apt/keyrings/
+    state: directory
+    mode: '0755'
+
+- name: Download grafana gpg key
+  get_url:
+    url: https://apt.grafana.com/gpg.key
+    dest: /tmp/grafana.key
+    mode: '0644'
+
+- name: Dearmor grafana gpg key
+  command: gpg --dearmor --yes -o /etc/apt/keyrings/grafana.gpg /tmp/grafana.key
+  args:
+    creates: /etc/apt/keyrings/grafana.gpg
+
+- name: Remove temporary gpg key
+  file:
+    path: /tmp/grafana.key
+    state: absent
+
+- name: Add grafana alloy repository
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main"
+    state: present
+    filename: grafana
+    update_cache: true
+
+- name: Install grafana alloy
+  apt:
+    name: alloy
+    state: present
+
+- name: Ensure alloy service is enabled and started
+  systemd:
+    name: alloy
+    state: started
+    enabled: true
+
+- name: Create alloy.sh for post install
+  template:
+    src: templates/alloy.sh.j2
+    dest: /etc/profile.d/alloy.sh
+    mode: '0755'

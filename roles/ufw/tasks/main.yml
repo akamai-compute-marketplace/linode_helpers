@@ -1,0 +1,27 @@
+---
+# UFW rules are provided in ufw_rules.yml in roles/$APP/tasks
+
+- name: Install UFW
+  apt:
+    pkg:
+    - ufw
+    state: present
+
+- name: UFW allow outgoing
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: UFW deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: UFW enable
+  ufw:
+    state: enabled
+
+- name: Enable systemd UFW
+  service:
+    name: ufw
+    state: restarted

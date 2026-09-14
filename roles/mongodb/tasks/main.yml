@@ -1,0 +1,35 @@
+---
+# To utilize this mongodb helper, you will need a UDF for "mongo_version" to your stackscript.
+# This has been tested with mongo version 8.0, future versions will need to be tested
+
+- name: Set distro release codename
+  set_fact:
+    distribution_release: "{{ ansible_facts['lsb']['codename'] }}"
+    mongo_version: 8.0
+    
+- name: Add mongodb repository
+  copy:
+    dest: /etc/apt/sources.list.d/mongodb-org.list
+    content: |
+      deb [ signed-by=/usr/share/keyrings/mongodb-server-{{ mongo_version }}.gpg ] https://repo.mongodb.org/apt/ubuntu {{ distribution_release }}/mongodb-org/{{ mongo_version }} multiverse
+
+- name: Add mongodb gpg key
+  get_url:
+    url: https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc
+    dest: /tmp/mongodb-server-{{ mongo_version }}.asc
+
+- name: Decrypt and store mongodb gpg key
+  shell: gpg --dearmor --yes -o /usr/share/keyrings/mongodb-server-{{ mongo_version }}.gpg /tmp/mongodb-server-{{ mongo_version }}.asc
+
+- name: Install required packages
+  apt:
+    name:
+      - mongodb-org
+    state: present
+    update_cache: true
+
+- name: Start and enable mongodb
+  systemd:
+    name: mongod
+    state: started
+    enabled: true

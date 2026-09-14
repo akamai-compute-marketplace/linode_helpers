@@ -1,0 +1,7 @@
+# roles/common/handlers
+
+- name: Restart ssh
+  service:
+    name: ssh
+    state: restarted
+    enabled: yes

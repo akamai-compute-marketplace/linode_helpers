@@ -1,6 +1,4 @@
 ---
-# create prometheus system user
-
 - name: Checking for prometheus user
   getent:
     database: passwd

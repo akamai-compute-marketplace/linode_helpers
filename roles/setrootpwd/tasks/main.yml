@@ -14,7 +14,6 @@
   run_once: true
   delegate_to: localhost
 
-# set account passwords
 - name: Set root password on remote nodes
   lineinfile:
     path: /etc/shadow

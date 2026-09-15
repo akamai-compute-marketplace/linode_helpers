@@ -1,6 +1,4 @@
 ---
-# UFW rules are provided in ufw_rules.yml in roles/$APP/tasks
-
 - name: Install UFW
   apt:
     pkg:

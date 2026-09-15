@@ -1,7 +1,5 @@
 ---
-# apps/linode_helpers/roles/certbot_ssl/tasks/main.yml
-# import some DNS propagation task before getting cert
-- name: Install apache certbot plugin
+- name: Install Apache certbot plugin
   include_tasks:
     file: apache-certbot.yml
   when: webserver_stack == 'lamp'
@@ -16,7 +14,6 @@
     file: standalone-certbot.yml
   when: webserver_stack == 'standalone'
 
-# for web servers certbot has no installer plugin for. requires certbot_webroot
 - name: Use certbot webroot authenticator
   include_tasks:
     file: webroot-certbot.yml

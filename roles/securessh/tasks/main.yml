@@ -1,6 +1,4 @@
 ---
-#This requires linode_helpers/roles/tasks/sshkey runs first in tasks/common/main.yml 
-#If root login is disabled and they have uploaded account keys
 - name: Secure ssh config
   lineinfile:
     path: /etc/ssh/sshd_config
@@ -16,7 +14,6 @@
     - authorized_keys_file.stat.exists
     - authorized_keys_file.stat.size > 0
 
-# If root login is disabled and they don't provide an SSH KEY
 - name: Secure ssh config
   lineinfile:
     path: /etc/ssh/sshd_config

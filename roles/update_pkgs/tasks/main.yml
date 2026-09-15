@@ -1,5 +1,5 @@
 ---
-- name: Upgrade apt packages
+- name: Upgrade system packages
   apt:
     upgrade: full
     update_cache: true

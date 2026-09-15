@@ -1,6 +1,4 @@
 ---
-# this helper will only function if a username is provided in the var file, typically as a UDF.
-# compatible with legacy pubkey UDF
 - name: Assign ssh keys
   lineinfile:
     dest: '/home/{{ username }}/.ssh/authorized_keys'
@@ -11,7 +9,6 @@
     mode: '0600'
   when: pubkey is defined
 
-# add keys when deployed with account keys
 - name: Checking account keys
   stat:
     path: '/root/.ssh/authorized_keys'

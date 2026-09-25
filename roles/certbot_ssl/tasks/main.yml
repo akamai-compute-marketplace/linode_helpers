@@ -1,4 +1,8 @@
 ---
+- name: Check for test cert run
+  set_fact:
+    certbot_test_cert_flag: "{{ lookup('env', 'CERTBOT_TEST_CERT') }}"
+
 - name: Install Apache certbot plugin
   include_tasks:
     file: apache-certbot.yml

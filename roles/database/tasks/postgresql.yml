@@ -6,7 +6,7 @@
 
 - name: Update postgresql password
   postgresql_query:
-    db: postgres
+    login_db: postgres
     query: "ALTER USER postgres PASSWORD '{{ postgresql_password }}';"
   become: true
   become_method: su
